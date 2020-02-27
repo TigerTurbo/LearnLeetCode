@@ -6,14 +6,14 @@ package com.yshuoo.leetcode.queue;
  */
 class MyCircularQueue {
 
-    private Integer[] queue;
+    private int[] queue;
     private int head = -1;
     private int tail = -1;
     private int size;
 
     /** Initialize your data structure here. Set the size of the queue to be k. */
     public MyCircularQueue(int k) {
-        queue = new Integer[k];
+        queue = new int[k];
         size = k;
     }
 
@@ -44,7 +44,7 @@ class MyCircularQueue {
         if (isEmpty()){
             return false;
         }
-        queue[head] = null;
+
         if (head == tail){
 
             head = -1;
