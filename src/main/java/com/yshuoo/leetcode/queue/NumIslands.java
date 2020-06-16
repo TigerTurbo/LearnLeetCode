@@ -1,8 +1,5 @@
 package com.yshuoo.leetcode.queue;
 
-import java.util.LinkedList;
-import java.util.Queue;
-
 /**
  * @author yangshuo
  * @date 2020/3/10 15:24
@@ -30,41 +27,90 @@ import java.util.Queue;
  */
 public class NumIslands {
 
-    private static int[][] STEP = {{0,1},{0,-1},{1,0},{-1,0}};
-
     public int numIslands(char[][] grid) {
-        int row = grid.length;
-        int num = 0;
-        if (row <= 0){
+
+        if (grid == null || grid.length <= 0){
             return 0;
         }
+
+        NumLand numLand = new NumLand(grid);
+
+        int row = grid.length;
         int column = grid[0].length;
+
         for (int i = 0; i < row; i++){
             for (int j = 0; j < column; j++){
-                if (grid[i][j] != 49){
-                    continue;
-                }
-                Queue queue = new LinkedList();
-                int[] point = {i,j};
-                queue.add(point);
-                while (!queue.isEmpty()){
-                    int[] points = (int[])queue.poll();
-                    // grid[points[0]][points[1]] = '2'; 在这里才设置已经遍历过，会导致很多循环，执行超时
-                    for (int[] step : STEP){
-                        int x = step[0] + points[0];
-                        int y = step[1] + points[1];
-                        if (x < 0 || x >= row || y < 0 || y >= column || grid[x][y] != 49){
-                            continue;
-                        }
-                        int[] p = {x,y};
-                        queue.add(p);
-                        grid[x][y] = '2';
+                if (grid[i][j] == '1'){
+                    grid[i][j] = '0';
+                    if (i - 1 >= 0 && grid[i-1][j] == '1'){
+                        numLand.union(i * column + j, (i-1) * column + j);
+                    }
+                    if (j - 1 >= 0 && grid[i][j-1] == '1'){
+                        numLand.union(i * column + j, i * column + j - 1);
+                    }
+                    if (i + 1 < row && grid[i+1][j] == '1'){
+                        numLand.union(i * column + j, (i+1) * column + j);
+                    }
+                    if (j + 1 < column && grid[i][j+1] == '1'){
+                        numLand.union(i * column + j, i * column + j + 1);
                     }
                 }
-                num ++;
             }
         }
-        return num;
+
+        return numLand.getCount();
+
+    }
+
+    class NumLand {
+
+        private int[] parent;
+        private int[] rank;
+        private int count;
+
+        public NumLand(char[][] grid){
+            int row = grid.length;
+            int column = grid[0].length;
+            parent = new int[row * column];
+            rank = new int[row * column];
+            for (int i = 0; i < row; i++){
+                for (int j = 0; j < column; j++){
+                    if (grid[i][j] == '1'){
+                        parent[i * column + j] = i * column + j;
+                        count ++;
+                    }
+                }
+            }
+        }
+
+        public void union(int start, int end){
+            int rankX = find(start);
+            int rankY = find(end);
+            if (rankX != rankY){
+                if (rank[rankX] > rank[rankY]){
+                    parent[rankY] = rankX;
+                }else if (rank[rankX] < rank[rankY]){
+                    parent[rankX] = rankY;
+                }else{
+                    parent[rankX] = rankY;
+                    rank[rankY] += 1;
+                }
+                count --;
+            }
+        }
+
+        private int find(int i){
+            // 路径压缩，让每个元素都指向他的根节点
+            if (parent[i] != i){
+                parent[i] = find(parent[i]);
+            }
+            return parent[i];
+        }
+
+        public int getCount(){
+            return count;
+        }
+
     }
 
     public static void main(String[] args) {
@@ -76,10 +122,15 @@ public class NumIslands {
                 {'1','1','0','0','0'},
                 {'0','0','1','0','0'},
                 {'0','0','0','1','1'}};
+        char[][] grid2 = {{'1','1','1'},
+                {'0','1','0'},
+                {'1','1','1'}};
         NumIslands numIslands = new NumIslands();
         int num = numIslands.numIslands(grid);
         int value = numIslands.numIslands(grid1);
+        int value2 = numIslands.numIslands(grid2);
         System.out.println(num);
         System.out.println(value);
+        System.out.println(value2);
     }
 }
