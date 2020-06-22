@@ -1,4 +1,4 @@
-package com.yshuoo.leetcode.queue;
+package com.yshuoo.leetcode.stack;
 
 import java.util.*;
 
