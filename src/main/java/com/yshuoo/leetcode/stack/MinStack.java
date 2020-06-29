@@ -31,7 +31,7 @@ public class MinStack {
     private int min;
     /** initialize your data structure here. */
     public MinStack() {
-        list = new ArrayList<>();
+        list = new ArrayList<Integer>();
         min = Integer.MAX_VALUE;
     }
 

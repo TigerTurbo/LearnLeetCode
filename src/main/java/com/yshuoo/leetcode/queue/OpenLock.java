@@ -72,8 +72,8 @@ public class OpenLock {
             startArray[dead] = -1;
             endArray[dead] = -1;
         }
-        Queue<Integer> startQueue = new LinkedList<>();
-        Queue<Integer> endQueue = new LinkedList<>();
+        Queue<Integer> startQueue = new LinkedList<Integer>();
+        Queue<Integer> endQueue = new LinkedList<Integer>();
         int targetKey = Integer.valueOf(target);
         startQueue.add(0);
         endQueue.add(targetKey);

@@ -62,7 +62,7 @@ public class IsValid {
         if (charArray[0] != small[left] && charArray[0] != middle[left] && charArray[0] != large[left]){
             return false;
         }
-        Stack<Character> stack = new Stack<>();
+        Stack<Character> stack = new Stack<Character>();
         for (char c : charArray){
             if (stack.isEmpty()){
                 stack.add(c);
