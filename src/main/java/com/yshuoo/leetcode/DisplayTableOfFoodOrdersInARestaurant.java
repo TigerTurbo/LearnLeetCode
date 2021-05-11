@@ -56,6 +56,56 @@ public class DisplayTableOfFoodOrdersInARestaurant {
         return lastList;
     }
 
+    public static List<List<String>> displayTable2(List<List<String>> orders) {
+        // 保存桌号与横坐标
+        TreeMap<Integer,Integer> deskMap = new TreeMap<>();
+        // 保存菜品与纵坐标
+        TreeMap<String, Integer> foodMap = new TreeMap<>();
+
+        for (List<String> itemList : orders){
+            deskMap.put(Integer.parseInt(itemList.get(1)),-1);
+            foodMap.put(itemList.get(2),-1);
+        }
+
+        int[][] infoToInt = new int[deskMap.keySet().size()][foodMap.keySet().size() + 1];
+
+        // 根据已经排好序的两个map,确定具体桌号与菜品的坐标
+        int defaultDeskIndex = -1;
+        for(Integer deskIndex : deskMap.keySet()){
+            deskMap.put(deskIndex, ++defaultDeskIndex);
+            infoToInt[defaultDeskIndex][0] = deskIndex;
+        }
+
+        int defaultFoodIndex = -1;
+        // 在遍历菜品时，把列表头构造出来
+        List<String> lineList = new ArrayList<>();
+        lineList.add("Table");
+        for(String foodName : foodMap.keySet()){
+            foodMap.put(foodName, ++defaultFoodIndex);
+            lineList.add(foodName);
+        }
+
+        for (List<String> itemList : orders){
+            String foodName = itemList.get(2);
+            int foodIndex = foodMap.get(foodName);
+            int deskNum = Integer.parseInt(itemList.get(1));
+            int deskIndex = deskMap.get(deskNum);
+            infoToInt[deskIndex][foodIndex + 1] = infoToInt[deskIndex][foodIndex + 1] + 1;
+        }
+
+        List<List<String>> resultList = new ArrayList();
+        resultList.add(lineList);
+        for (int i = 0; i < infoToInt.length; i ++){
+            List<String> list = new ArrayList();
+            for (int j = 0; j < infoToInt[i].length; j++){
+                list.add(String.valueOf(infoToInt[i][j]));
+            }
+            resultList.add(list);
+        }
+        return resultList;
+
+    }
+
     public static void main(String[] args) {
         List<List<String>> orders = new ArrayList<>();
         List<String> order1 = new ArrayList<>();
@@ -88,7 +138,7 @@ public class DisplayTableOfFoodOrdersInARestaurant {
         order6.add("3");
         order6.add("Ceviche");
         orders.add(order6);
-        List<List<String>> lists = displayTable(orders);
+        List<List<String>> lists = displayTable2(orders);
         System.out.println(lists);
     }
 
