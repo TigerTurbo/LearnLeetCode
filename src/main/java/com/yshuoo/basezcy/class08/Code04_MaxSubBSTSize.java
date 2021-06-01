@@ -120,11 +120,61 @@ public class Code04_MaxSubBSTSize {
 		int testTimes = 1000000;
 		for (int i = 0; i < testTimes; i++) {
 			Node head = generateRandomBST(maxLevel, maxValue);
-			if (maxSubBSTSize1(head) != maxSubBSTSize2(head)) {
+			if (maxSubBSTSize4(head) != maxSubBSTSize2(head)) {
 				System.out.println("Oops!");
 			}
 		}
 		System.out.println("finish!");
+	}
+
+	public static int maxSubBSTSize4(Node head) {
+		if (head == null) {
+			return 0;
+		}
+		return process4(head).maxSubBSTSize;
+	}
+
+	public static Info process4(Node head){
+		if (head == null){
+			return new Info(true,0,Integer.MAX_VALUE,Integer.MIN_VALUE);
+		}
+		Info left = process4(head.left);
+		Info right = process4(head.right);
+
+		int min = Math.min(left.min,right.min);
+		int max = Math.max(left.max,right.max);
+		int size = Math.max(left.maxSubBSTSize,right.maxSubBSTSize);
+		boolean isBst = false;
+		if (left.max < head.value && right.min > head.value && left.isBST && right.isBST){
+			size = left.maxSubBSTSize + right.maxSubBSTSize + 1;
+			isBst = true;
+		}
+		min = Math.min(min,head.value);
+		max = Math.max(max,head.value);
+		return new Info(isBst,size,min,max);
+
+	}
+
+
+	public static Info process5(Node head){
+		if (head == null){
+			return new Info(true,0,Integer.MAX_VALUE,Integer.MIN_VALUE);
+		}
+		Info left = process5(head.left);
+		Info right = process5(head.right);
+
+		int min = Math.min(left.min,right.min);
+		int max = Math.max(left.max,right.max);
+		int size = Math.max(left.maxSubBSTSize,right.maxSubBSTSize);
+		boolean isBst = false;
+		if ((left.max < head.value) && (right.min > head.value) && left.isBST && right.isBST){
+			size = left.maxSubBSTSize + right.maxSubBSTSize + 1;
+			isBst = true;
+		}
+		min = Math.min(min,head.value);
+		max = Math.max(max,head.value);
+		return new Info(isBst,size,min,max);
+
 	}
 
 }

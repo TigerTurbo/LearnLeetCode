@@ -54,15 +54,15 @@ public class Code06_IsCBT {
 	}
 
 	public static class Info {
-		public boolean isFull;
-		public boolean isCBT;
-		public int height;
+			public boolean isFull;
+			public boolean isCBT;
+			public int height;
 
-		public Info(boolean full, boolean cbt, int h) {
-			isFull = full;
-			isCBT = cbt;
-			height = h;
-		}
+			public Info(boolean full, boolean cbt, int h) {
+				isFull = full;
+				isCBT = cbt;
+				height = h;
+			}
 	}
 
 	public static Info process(Node head) {
@@ -77,13 +77,17 @@ public class Code06_IsCBT {
 		if (isFull) {
 			isCBT = true;
 		} else {
+			// 以X为头，不满，左树与右树有一个不是完全，那么条件2.1，2.2,2.3都不成立
 			if (leftInfo.isCBT && rightInfo.isCBT) {
+				// 2.1
 				if (leftInfo.isCBT && rightInfo.isFull && leftInfo.height == rightInfo.height + 1) {
 					isCBT = true;
 				}
+				// 长满了 2.2
 				if (leftInfo.isFull && rightInfo.isFull && leftInfo.height == rightInfo.height + 1) {
 					isCBT = true;
 				}
+				// 最后一层结点左边撑满了，条件2.3
 				if (leftInfo.isFull && rightInfo.isCBT && leftInfo.height == rightInfo.height) {
 					isCBT = true;
 				}

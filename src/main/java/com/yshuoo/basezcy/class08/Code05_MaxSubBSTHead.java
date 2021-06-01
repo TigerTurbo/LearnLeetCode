@@ -56,11 +56,12 @@ public class Code05_MaxSubBSTHead {
 		return process(head).maxSubBSTHead;
 	}
 
+	// 每个子树
 	public static class Info {
-		public Node maxSubBSTHead;
-		public int maxSubBSTSize;
-		public int min;
-		public int max;
+		public Node maxSubBSTHead; // 子树上的最大二叉搜索子树的头结点
+		public int maxSubBSTSize; // 最大二叉搜索子树的结点数量
+		public int min; // 最大二叉搜索子树上的最小值
+		public int max; // 最大二叉搜索子树上的最大值
 
 		public Info(Node h, int size, int mi, int ma) {
 			maxSubBSTHead = h;

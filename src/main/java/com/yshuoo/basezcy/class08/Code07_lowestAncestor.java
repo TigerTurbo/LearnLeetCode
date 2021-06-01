@@ -20,6 +20,7 @@ public class Code07_lowestAncestor {
 		if (head == null) {
 			return null;
 		}
+		// key的父节点是value
 		HashMap<Node, Node> parentMap = new HashMap<>();
 		parentMap.put(head, null);
 		fillParentMap(head, parentMap);
@@ -53,8 +54,11 @@ public class Code07_lowestAncestor {
 	}
 
 	public static class Info {
+		// 最初交汇点
 		public Node ans;
+		// 发现了o1
 		public boolean findO1;
+		// 发现了o2
 		public boolean findO2;
 
 		public Info(Node a, boolean f1, boolean f2) {
@@ -74,17 +78,21 @@ public class Code07_lowestAncestor {
 		boolean findO1 = head == o1 || leftInfo.findO1 || rightInfo.findO1;
 		boolean findO2 = head == o2 || leftInfo.findO2 || rightInfo.findO2;
 		Node ans = null;
+		// 左树上已经提前交汇了
 		if (leftInfo.ans != null) {
 			ans = leftInfo.ans;
 		}
+		// 右树已经提前交汇了
 		if (rightInfo.ans != null) {
 			ans = rightInfo.ans;
 		}
+		// 左，右都没提前交汇，但是此时又都找到了，那么说明X就是交汇点
 		if (ans == null) {
 			if (findO1 && findO2) {
 				ans = head;
 			}
 		}
+		// 到了这一步，就说明至少有一个没找到，所以将信息传递上去，继续判断
 		return new Info(ans, findO1, findO2);
 	}
 

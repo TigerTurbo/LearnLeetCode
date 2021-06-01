@@ -104,11 +104,43 @@ public class Code09_MaxHappy {
 		int testTimes = 100000;
 		for (int i = 0; i < testTimes; i++) {
 			Employee boss = genarateBoss(maxLevel, maxNexts, maxHappy);
-			if (maxHappy1(boss) != maxHappy2(boss)) {
+			if (maxHappy3(boss) != maxHappy1(boss)) {
 				System.out.println("Oops!");
 			}
 		}
 		System.out.println("finish!");
+	}
+
+	public static int maxHappy3(Employee root){
+		Info y = process3(root,true);
+		Info n = process3(root,false);
+		return Math.max(y.yes,n.yes);
+	}
+
+
+	public static Info process3(Employee root, boolean come){
+		if (root == null){
+			return new Info(0,0);
+		}
+		int happy = root.happy;
+		int comMax = happy;
+		int noMax = 0;
+		if (root.nexts != null){
+			for (Employee e : root.nexts){
+				Info comeInfo = process3(e,true);
+				Info noInfo = process3(e,false);
+				if (come){
+					comMax += noInfo.yes;
+				}else{
+					noMax += Math.max(comeInfo.yes, noInfo.yes);
+				}
+			}
+		}
+
+		if (come){
+			return new Info(comMax,0);
+		}
+		return new Info(noMax,0);
 	}
 
 }
